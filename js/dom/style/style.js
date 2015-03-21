@@ -5,6 +5,28 @@ define("dom.style.style", [], function(require, exports, module){
 	var r_default = /width|height|top|left|right|bottom|margin|padding|marginTop|marginLeft|marginRight|marginBottom|paddingTop|paddingLeft|paddingRight|paddingBottom|fontSize/i;
 	var _unit = "px";
 
+	var _get;
+	(function (){
+		if(window.getComputedStyle){
+			_get =  function(node, name){
+				return window.getComputedStyle(node, null) ? window.getComputedStyle(node, null).getPropertyValue(_str.dasherize(name)) : null;
+			}
+
+			return;
+		}
+
+		if (document.defaultView && document.defaultView.getComputedStyle) {
+			_get = function(node, name){
+				return document.defaultView.getComputedStyle(el, null) ? document.defaultView.getComputedStyle(el, null).getPropertyValue(_str.dasherize(name)) : null;
+			}
+			return;
+        }
+
+        _get = function(node, name){
+        	return node.currentStyle ? node.currentStyle[name] : node.style[name];
+        }
+	})();
+
 	function _correctStyle(obj){
 		var style = {},
 			value = "";
@@ -46,16 +68,12 @@ define("dom.style.style", [], function(require, exports, module){
                 return node.style.opacity ? parseFloat(node.style.opacity) : 1;
             }
 		}else {
-			if(window.getComputedStyle){
-				return window.getComputedStyle(node, null) ? window.getComputedStyle(node, null).getPropertyValue(_str.dasherize(name)) : null;
-			}
-
-			if (document.defaultView && document.defaultView.getComputedStyle) {
-                return document.defaultView.getComputedStyle(el, null) ? document.defaultView.getComputedStyle(el, null).getPropertyValue(_str.dasherize(name)) : null;
-            }
-
-            return node.currentStyle ? node.currentStyle[name] : node.style[name];
+			return _get(node, name);
 		}
+	}
+
+	function _getNum(node, name){
+		return _get(node, name) ? parseInt(_get(node, name), 10) : 0;
 	}
 
 	function _setStyle(node, obj){
@@ -100,6 +118,76 @@ define("dom.style.style", [], function(require, exports, module){
 			});
 
 			return this;
+		},
+
+		width: function(value){
+			if(!this.length) return this;
+
+			if(typeof value === "undefined"){
+				return _get(this[0], "width");
+			}else {
+				var _obj = {};
+
+				if(isType.isNumber(value)){
+					vaule += _unit;
+				}
+
+				_obj.width = value;
+				this.forEach(function(node){
+					_setStyle(node, _obj);
+				});
+
+				return this;
+			}
+		},
+
+		height: function(value){
+			if(!this.length) return this;
+
+			if(typeof value === "undefined"){
+				return _get(this[0], "height");
+			}else {
+				var _obj = {};
+
+				if(isType.isNumber(value)){
+					vaule += _unit;
+				}
+
+				_obj.height = value;
+				this.forEach(function(node){
+					_setStyle(node, _obj);
+				});
+
+				return this;
+			}
+		},
+
+		innerWidth: function(){
+			if(!this.length) return this;
+
+			var node = this[0];
+
+			return _getNum(node, "width") + _getNum(node, "paddingLeft") + _getNum(node, "paddingRight") + _getNum(node, "borderLeftWidth") + _getNum(node, "borderRightWidth");
+		},
+
+		innerHeight: function(){
+			if(!this.length) return this;
+
+			var node = this[0];
+
+			return _getNum(node, "height") + _getNum(node, "paddingTop") + _getNum(node, "paddingBottom") + _getNum(node, "borderTopWidth") + _getNum(node, "borderBottomWidth");
+		},
+
+		outerWidth: function(){
+			if(!this.length) return this;
+
+			return this.innerWidth() + _getNum(this[0], "marginLeft") + _getNum(this[0], "marginRight");
+		},
+
+		outerHeight: function(){
+			if(!this.length) return this;
+
+			return this.innerHeight() + _getNum(this[0], "marginTop") + _getNum(this[0], "marginBottom");
 		}
 	}
 });

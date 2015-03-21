@@ -14,6 +14,7 @@ define("common.array", [], function(require, exports, module){
 	}
 
 	module.exports = {
-		createDiyArray: createDiyArray
+		createDiyArray: createDiyArray,
+		array: _arr
 	};
 });
