@@ -1,0 +1,14 @@
+{
+    "configFile": {
+        "DIY.js": [
+            "js/AMD.js",
+            "js/DIY.js",
+            "js/main.js"
+        ]
+    },
+    "config": {
+        "version": "v1.0.0",
+        "publish": "v20141018",
+        "path": "js/"
+    }
+}

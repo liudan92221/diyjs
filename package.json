@@ -1,0 +1,19 @@
+{
+  "name": "DIYJS",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "fis",
+    "demo"
+  ],
+  "repository": "https://github.com/hefangshi/fis-quickstart-demo",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "cssmin": "~0.4.1",
+    "concat": "~1.0.0",
+    "grunt-contrib-uglify": "~0.5.1",
+    "grunt-contrib-concat": "~0.5.0",
+    "grunt-contrib-cssmin": "~0.10.0"
+  }
+}

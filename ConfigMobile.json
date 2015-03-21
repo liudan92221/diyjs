@@ -1,0 +1,13 @@
+{
+    "configFile": {
+        "DIY-mobile.js": [
+            "mobilejs/AMD.js",
+            "mobilejs/main.js"
+        ]
+    },
+    "config": {
+        "version": "v1.0.0-mobile",
+        "publish": "v20140914",
+        "path": "mobilejs/"
+    }
+}
